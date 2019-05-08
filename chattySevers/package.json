@@ -1,0 +1,16 @@
+{
+  "name": "chattysevers",
+  "version": "1.0.0",
+  "description": "3rdparty",
+  "main": "chatty-server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node chatty-server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "4.16.4",
+    "ws": "7.0.0"
+  }
+}
