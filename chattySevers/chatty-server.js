@@ -16,6 +16,9 @@ const wss = new SocketServer({ server });
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', function connection(ws) {
+  wss.clients.forEach(function each(client) {
+      client.send(wss.clients.size);
+    
   ws.on('message', function incoming(data) {
     wss.clients.forEach(function each(client) {
       if (client.readyState === WebSocket.OPEN) {
@@ -23,4 +26,9 @@ wss.on('connection', function connection(ws) {
       }
     })
   });
-});
+  ws.on('close', () => {
+    console.log('Client disconnected')
+    wss.clients.forEach(function each(client) {
+      client.send(wss.clients.size);
+  })
+})});

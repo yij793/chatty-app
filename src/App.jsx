@@ -6,17 +6,23 @@ const uuidv1 = require('uuid/v1');
 class App extends Component {
   constructor(props){
     super(props)
-    this.state={messagesDB: [],username:'Anonymous',preverseName:'Anonymous'}
+    this.state={messagesDB: [],username:'Anonymous',preverseName:'Anonymous',user:0}
      this.ws = new WebSocket('ws://localhost:3001')
   }
   
   componentDidMount() {
     console.log("componentDidMount <App />");
+    
     this.ws.onopen = (event) => {
       console.log("Connected to server");
     }
     this.ws.onmessage = (event)=> {
       let newData=JSON.parse(event.data);
+      console.log(typeof newData)
+     if(typeof newData==='number'){
+       this.setState({user:newData})
+     }
+      
      let newstate=this.state.messagesDB
         newstate.push(newData)
         this.setState({messagesDB:newstate})
@@ -66,6 +72,7 @@ class App extends Component {
     <div>
       <nav className="navbar">
         <a href="/" className="navbar-brand">Chatty</a>
+        <span className='displayOnline'>{this.state.user} online </span>
       </nav>
       <MessageList infors={this.state.messagesDB}/>
       <Chatbar newText={this.addText} value={this.state.username} changeStateName={this.changeName} blur={this.sendNote} focus={this.getPreverseName}/>
