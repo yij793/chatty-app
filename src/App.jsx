@@ -16,9 +16,11 @@ class App extends Component {
       console.log("Connected to server");
     }
     this.ws.onmessage = (event)=> {
-      let newstate=this.state.messagesDB
-      newstate.push(JSON.parse(event.data) )
-      this.setState({messagesDB:newstate})
+      let newData=JSON.parse(event.data);
+     let newstate=this.state.messagesDB
+        newstate.push(newData)
+        this.setState({messagesDB:newstate})
+      
     }
     }
 
@@ -29,6 +31,7 @@ class App extends Component {
   }
   addText=(text)=>{
     let username=this.state.username;
+    if(username===null || username===''){username='Anonymous'}
     let newtext={
       id:uuidv1(),
       type:'incomingMessage',
@@ -37,6 +40,22 @@ class App extends Component {
     }
     this.ws.send(JSON.stringify(newtext))
     
+  }
+  getPreverseName=(e)=>{
+    let name=e.target.value
+    this.setState({preverseName:name})
+  }
+  sendNote=(e)=>{
+    let name=e.target.value;
+    if(name===null || name===''){name='Anonymous'}
+    let notes=`${this.state.preverseName} changed their name to ${name}`
+    let notifction={
+      type:'incomingNotification',
+      note:notes,
+      id:uuidv1()
+    }
+    if(this.state.preverseName!==this.state.username)
+    this.ws.send(JSON.stringify(notifction))
   }
 
 
@@ -49,7 +68,7 @@ class App extends Component {
         <a href="/" className="navbar-brand">Chatty</a>
       </nav>
       <MessageList infors={this.state.messagesDB}/>
-      <Chatbar newText={this.addText} value={this.state.username} changeStateName={this.changeName} blur={}/>
+      <Chatbar newText={this.addText} value={this.state.username} changeStateName={this.changeName} blur={this.sendNote} focus={this.getPreverseName}/>
     </div>
       
     );
