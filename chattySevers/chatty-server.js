@@ -17,11 +17,34 @@ const wss = new SocketServer({ server });
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
+
+
+let color=['rgb(53, 101, 0)','rgb(170, 137, 57)','rgb(170, 63, 57)','rgb(65, 48, 117)','rgb(39, 86, 107)']
 wss.on('connection', function connection(ws) {
+  
+  let colors={
+    type:'color',
+    color:color[Math.floor(Math.random()*5)]
+  }
+  
+  ws.send(JSON.stringify(colors));
+
+  const totalClient=wss.clients.size
+  let onLineClient={
+
+    type:'onlineNumber',
+    size:totalClient
+  }
   wss.clients.forEach(function each(client) {
-      client.send(wss.clients.size);
+    
+      client.send(JSON.stringify(onLineClient));
+      
+     
+      
   })
+  
   ws.on('message', function incoming(data) {
+    ws.send(JSON.stringify(colors));
     let jsonData=JSON.parse(data)
     switch(jsonData.type){
       case "incomingMessage":
@@ -51,6 +74,8 @@ wss.on('connection', function connection(ws) {
     })
   })
   ws.on('close', () => {
+    
+    ws.send(JSON.stringify(colors))
     console.log('Client disconnected')
     wss.clients.forEach(function each(client) {
       client.send(wss.clients.size);
