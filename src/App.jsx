@@ -9,7 +9,6 @@ class App extends Component {
     this.state={messagesDB: [],username:'',preverseName:'Anonymous',user:0,postmessages:[],currentColor:'black'}
      this.ws = new WebSocket('ws://localhost:3001')
   }
-  
   componentDidMount() {
     console.log("componentDidMount <App />");
     
@@ -18,10 +17,8 @@ class App extends Component {
     }
     this.ws.onmessage = (event)=> {
       let newData=JSON.parse(event.data);
-      console.log(newData.type)
       switch(newData.type) {
         case "incomingMessage":
-        console.log(newData)
         let newstate1=this.state.messagesDB
         newstate1.push(newData)
         this.setState({messagesDB:newstate1})
@@ -36,6 +33,11 @@ class App extends Component {
           break;
         case "color":
         this.setState({currentColor:newData.color})
+          break;
+        case "withPic":
+        let newstate3=this.state.messagesDB
+        newstate3.push(newData)
+        this.setState({messagesDB:newstate3})
           break;
         default:
           // show an error in the console if the message type is unknown
@@ -54,13 +56,30 @@ class App extends Component {
   addText=(text)=>{
     let username=this.state.username;
     if(username===null || username===''){username='Anonymous'}
-    let newtext={
+    let reg=/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g;
+    if(reg.test(text)){
+      let url=text.match(reg);
+      let newMesg=text.replace(reg,'');
+      let newMesgs={
+        type:'withPics',
+        content:newMesg,
+        url:url,
+        username:username,
+        color:this.state.currentColor
+      }
+      this.ws.send(JSON.stringify(newMesgs))
+
+    }else{
+      console.log('this should not')
+      let newtext={
       type:'incomingMessage',
       content:text,
       username:username,
       color:this.state.currentColor
     }
     this.ws.send(JSON.stringify(newtext))
+  }
+    
     
   }
   getPreverseName=(e)=>{
