@@ -6,7 +6,7 @@ import messagesDB from './messagesDB.json';
 class App extends Component {
   constructor(props){
     super(props)
-    this.state={messagesDB: [],username:'Anonymous',preverseName:'Anonymous',user:0,postmessages:[]}
+    this.state={messagesDB: [],username:'Anonymous',preverseName:'Anonymous',user:0,postmessages:[],currentColor:'black'}
      this.ws = new WebSocket('ws://localhost:3001')
   }
   
@@ -18,9 +18,10 @@ class App extends Component {
     }
     this.ws.onmessage = (event)=> {
       let newData=JSON.parse(event.data);
-   
+      console.log(newData.type)
       switch(newData.type) {
         case "incomingMessage":
+        console.log(newData)
         let newstate1=this.state.messagesDB
         newstate1.push(newData)
         this.setState({messagesDB:newstate1})
@@ -34,7 +35,7 @@ class App extends Component {
         this.setState({user:newData.size})
           break;
         case "color":
-        console.log('this color is '+ newData.color)
+        this.setState({currentColor:newData.color})
           break;
         default:
           // show an error in the console if the message type is unknown
@@ -43,16 +44,10 @@ class App extends Component {
     
      
 
-    }
-     
- 
-     
-      
+    }     
     }
     }
 
-  
-  
   changeName=(newName)=>{
     this.setState({username : newName}) 
   }
@@ -62,7 +57,8 @@ class App extends Component {
     let newtext={
       type:'incomingMessage',
       content:text,
-      username:username
+      username:username,
+      color:this.state.currentColor
     }
     this.ws.send(JSON.stringify(newtext))
     
@@ -93,8 +89,15 @@ class App extends Component {
         <a href="/" className="navbar-brand">Chatty</a>
         <span className='displayOnline'>{this.state.user} online </span>
       </nav>
-      <MessageList infors={this.state.messagesDB} notifction={this.state.postmessages}/>
-      <Chatbar newText={this.addText} value={this.state.username} changeStateName={this.changeName} blur={this.sendNote} focus={this.getPreverseName}/>
+      <MessageList 
+      infors={this.state.messagesDB}/>
+      <Chatbar 
+      newText={this.addText} 
+      value={this.state.username} 
+      changeStateName={this.changeName} 
+      blur={this.sendNote} 
+      focus={this.getPreverseName}/>
+      
     </div>
       
     );
