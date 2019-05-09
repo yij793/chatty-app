@@ -5,7 +5,10 @@ class Chatbar extends Component {
     const addtext=(e)=>{
       if(e.key==='Enter'){
         let contents=e.target.value
-        if(contents.trim()!==null && contents.trim()!=='' ){this.props.newText(contents)}
+        if(contents.trim()!==null && contents.trim()!=='' ){
+          this.props.newText(contents)
+          e.target.value=''
+        }
         }else{
           console.log('NO!!!!')
         }
