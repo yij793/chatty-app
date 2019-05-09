@@ -43,8 +43,7 @@ wss.on('connection', function connection(ws) {
       
   })
   
-  ws.on('message', function incoming(data) {
-    ws.send(JSON.stringify(colors));
+  ws.on('message', function incoming(data) {  
     let jsonData=JSON.parse(data)
     switch(jsonData.type){
       case "incomingMessage":
@@ -52,7 +51,8 @@ wss.on('connection', function connection(ws) {
           id:uuidv1(),
           username:jsonData.username,
           content:jsonData.content,
-          type:'incomingMessage'
+          type:'incomingMessage',
+          color:jsonData.color
         }
         break;
       case "incomingNotification":
@@ -61,7 +61,7 @@ wss.on('connection', function connection(ws) {
         note:jsonData.note,
         type:'incomingNotification'
       }
-        break;
+      break;
       default:
         // show an error in the console if the message type is unknown
         throw new Error("Unknown event type " + data.type);
@@ -70,6 +70,7 @@ wss.on('connection', function connection(ws) {
     wss.clients.forEach(function each(client) {
       if (client.readyState === WebSocket.OPEN) {
         client.send(JSON.stringify(newData));
+        
       }
     })
   })
