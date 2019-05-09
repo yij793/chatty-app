@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 class Message extends Component {
   render() {
     if(this.props.type==='incomingNotification'){
+      console.log('this is a incomingNotification')
+      console.log(this.props.note)
       return (<div className="message system">
     {this.props.note}
          </div>)

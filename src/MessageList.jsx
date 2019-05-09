@@ -4,7 +4,6 @@ import { generateRandomId } from './idgenerator.jsx'
 class MessageList extends Component {
   render() {
     let message=this.props.infors;
-    
     let totalMessage=message.map(item=>
         <Message name={item.username} content={item.content} key={generateRandomId()} type={item.type} note={item.note} />
     )
