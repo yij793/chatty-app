@@ -3,11 +3,12 @@ import React, { Component } from 'react'
 class Chatbar extends Component {
   render() {
     const addtext=(e)=>{
-      console.log()
       if(e.key==='Enter'){
         let contents=e.target.value
-        if(contents!==null || contents!=='' )
-        this.props.newText(contents)}
+        if(contents.trim()!==null && contents.trim()!=='' ){this.props.newText(contents)}
+        }else{
+          console.log('NO!!!!')
+        }
        
       
     }
