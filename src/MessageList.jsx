@@ -6,7 +6,7 @@ class MessageList extends Component {
     let message=this.props.infors;
     console.log(message)
     let totalMessage=message.map(item=>
-        <Message name={item.username} content={item.content} key={generateRandomId()} type={item.type} note={item.note} color={item.color}/>
+        <Message name={item.username} content={item.content} key={generateRandomId()} type={item.type} note={item.note} color={item.color} url={item.url}/>
     )
     return (
         <div>
