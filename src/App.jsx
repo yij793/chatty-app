@@ -6,7 +6,7 @@ import messagesDB from './messagesDB.json';
 class App extends Component {
   constructor(props){
     super(props)
-    this.state={messagesDB: [],username:'Anonymous',preverseName:'Anonymous',user:0,postmessages:[],currentColor:'black'}
+    this.state={messagesDB: [],username:'',preverseName:'Anonymous',user:0,postmessages:[],currentColor:'black'}
      this.ws = new WebSocket('ws://localhost:3001')
   }
   
@@ -75,7 +75,7 @@ class App extends Component {
       type:'incomingNotification',
       note:notes,
     }
-    if(this.state.preverseName!==this.state.username)
+    if(this.state.preverseName!==this.state.username && this.state.preverseName!=='')
     this.ws.send(JSON.stringify(notifction))
   }
 
