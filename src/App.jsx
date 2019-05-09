@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Chatbar from './Chatbar.jsx';
 import MessageList from './MessageList.jsx';
 import messagesDB from './messagesDB.json';
-const uuidv1 = require('uuid/v1');
+
 class App extends Component {
   constructor(props){
     super(props)
@@ -18,9 +18,7 @@ class App extends Component {
     }
     this.ws.onmessage = (event)=> {
       let newData=JSON.parse(event.data);
-     if(typeof newData==='number'){
-       this.setState({user:newData})
-     }else{
+   
       switch(newData.type) {
         case "incomingMessage":
         let newstate1=this.state.messagesDB
@@ -30,13 +28,18 @@ class App extends Component {
         case "incomingNotification":
         let newstate2=this.state.messagesDB
         newstate2.push(newData)
-        console.log('notes is ',newData)
         this.setState({messagesDB:newstate2})
+          break;
+        case "onlineNumber":
+        this.setState({user:newData.size})
+          break;
+        case "color":
+        console.log('this color is '+ newData.color)
           break;
         default:
           // show an error in the console if the message type is unknown
           throw new Error("Unknown event type " + newData.type);
-     }
+     
     
      
 
