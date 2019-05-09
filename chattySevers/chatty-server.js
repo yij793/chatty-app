@@ -4,21 +4,13 @@ const WebSocket=require('ws')
 // Set the port to 3001
 const PORT = 3001;
 const uuidv1 = require('uuid/v1');
-const uuidv3 = require('uuid/v3');
-
 // Create a new express server
 const server = express()
    // Make the express server serve static assets (html, javascript, css) from the /public folder
   .use(express.static('public'))
   .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
-
-// Create the WebSockets server
+//////
 const wss = new SocketServer({ server });
-// Set up a callback that will run when a client connects to the server
-// When a client connects they are assigned a socket, represented by
-// the ws parameter in the callback.
-
-
 let color=['rgb(53, 101, 0)','rgb(170, 137, 57)','rgb(170, 63, 57)','rgb(65, 48, 117)','rgb(39, 86, 107)']
 wss.on('connection', function connection(ws) {
   
@@ -60,6 +52,16 @@ wss.on('connection', function connection(ws) {
         id:uuidv1(),
         note:jsonData.note,
         type:'incomingNotification'
+      }
+      break;
+      case "withPics":
+      newData={
+        id:uuidv1(),
+        username:jsonData.username,
+        content:jsonData.content,
+        type:'withPic',
+        color:jsonData.color,
+        url:jsonData.url
       }
       break;
       default:
