@@ -52,3 +52,14 @@ npm run lint
 ***
 !['screenshot'](src/screentshoot/4.png)
 ***
+!['screenshot'](src/screentshoot/5.png)
+***
+!['screenshot'](src/screentshoot/6.png)
+***
+!['screenshot'](src/screentshoot/7.png)
+***
+!['screenshot'](src/screentshoot/8.png)
+***
+!['screenshot'](src/screentshoot/9.png)
+***
+
