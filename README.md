@@ -17,7 +17,7 @@ npm start
 open http://localhost:3000
 ```
 then install the severs side
-* go chattySevers fold
+* go chattySevers folder
 ```
 npm install
 npm start
