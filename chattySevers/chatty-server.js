@@ -6,37 +6,32 @@ const PORT = 3001;
 const uuidv1 = require('uuid/v1');
 // Create a new express server
 const server = express()
-   // Make the express server serve static assets (html, javascript, css) from the /public folder
-  .use(express.static('public'))
-  .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
+.use(express.static('public'))// Make the express server serve static assets (html, javascript, css) from the /public folder
+.listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
 //////
 const wss = new SocketServer({ server });
-let color=['rgb(53, 101, 0)','rgb(170, 137, 57)','rgb(170, 63, 57)','rgb(65, 48, 117)','rgb(39, 86, 107)']
+const color=['rgb(53, 101, 0)','rgb(170, 137, 57)','rgb(170, 63, 57)','rgb(65, 48, 117)','rgb(39, 86, 107)']
+/////when start a connect
 wss.on('connection', function connection(ws) {
-  
-  let colors={
+  console.log('Client Connected')
+  const colors={
     type:'color',
     color:color[Math.floor(Math.random()*5)]
   }
-  
   ws.send(JSON.stringify(colors));
 
-  const totalClient=wss.clients.size
-  let onLineClient={
-
+  const onLineClient={
     type:'onlineNumber',
-    size:totalClient
+    size:wss.clients.size
   }
+  //////send foreach client
   wss.clients.forEach(function each(client) {
-    
       client.send(JSON.stringify(onLineClient));
-      
-     
-      
-  })
-  
+    });
+/////when receive message from severs
   ws.on('message', function incoming(data) {  
-    let jsonData=JSON.parse(data)
+    const jsonData=JSON.parse(data)/////parse json data
+    /////divide datatype
     switch(jsonData.type){
       case "incomingMessage":
         newData={
@@ -65,23 +60,28 @@ wss.on('connection', function connection(ws) {
       }
       break;
       default:
+      console.log(data)
         // show an error in the console if the message type is unknown
         throw new Error("Unknown event type " + data.type);
     
   }
+  ////////Send back to Client
     wss.clients.forEach(function each(client) {
       if (client.readyState === WebSocket.OPEN) {
         client.send(JSON.stringify(newData));
         
       }
     })
-  })
+  });
+/////when close a stocks
   ws.on('close', () => {
-    
-    ws.send(JSON.stringify(colors))
     console.log('Client disconnected')
+    const onLineClient={
+      type:'onlineNumber',
+      size:wss.clients.size
+    }
     wss.clients.forEach(function each(client) {
-      client.send(wss.clients.size);
+      client.send(JSON.stringify(onLineClient));
   })
 })});
 
