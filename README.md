@@ -43,3 +43,12 @@ npm run lint
 * Webpack
 * [babel-loader](https://github.com/babel/babel-loader)
 * [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+### final view
+!['src/screenshot'](image/1.png)
+***
+!['src/screenshot'](image/2.png)
+***
+!['src/screenshot'](image/3.png)
+***
+!['src/screenshot'](image/4.png)
+***
