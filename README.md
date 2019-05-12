@@ -31,6 +31,7 @@ npm start
 * [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
 * expressjs
 * webstocket
+* UUID
 ### feature
 * user can chat each other
 * if name part is empty the name will be 'Anonymous'
