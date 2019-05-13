@@ -4,7 +4,7 @@ import MessageList from './MessageList.jsx';
 
 class App extends Component {
   constructor(props){
-    super(props)
+    super()
     this.state={
       messagesDB: [],
       username:'',
@@ -48,7 +48,7 @@ class App extends Component {
     }
 
   changeName=(e)=>{
-    const newName=e.target.value
+    let newName=e.target.value
     this.setState({username : newName}) 
   }
   addText=(e)=>{
@@ -57,7 +57,7 @@ class App extends Component {
       if(text.trim()){
         e.target.value=''
         let username=this.state.username;
-        if(username===null || username===''){username='Anonymous'}
+        if(!username.trim()){username='Anonymous'}
         let reg=/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g;
         ///test if infor contains image
         if(reg.test(text)){
@@ -91,7 +91,7 @@ class App extends Component {
   ///get PreverseName when focus
   getPreverseName=(e)=>{
     let name=e.target.value
-    if(name===''){
+    if(!name.trim()){
       name='Anonymous'
     }
     this.setState({preverseName:name})
@@ -99,7 +99,7 @@ class App extends Component {
   ///send noticy to severs when blur
   sendNote=(e)=>{
     let name=e.target.value;
-    if(name===null || name===''){
+    if(!name.trim()){
       name='Anonymous'
     }
     let notes=`${this.state.preverseName} changed their name to ${name}`
@@ -107,7 +107,7 @@ class App extends Component {
       type:'incomingNotification',
       note:notes,
     }
-    if(this.state.preverseName!==this.state.username)
+    if(this.state.preverseName!==name)
     this.ws.send(JSON.stringify(notifction))
   }
   render() {
