@@ -5,7 +5,13 @@ import MessageList from './MessageList.jsx';
 class App extends Component {
   constructor(props){
     super(props)
-    this.state={messagesDB: [],username:'',preverseName:'Anonymous',user:0,postmessages:[],currentColor:'black'}
+    this.state={
+      messagesDB: [],
+      username:'',
+      preverseName:'Anonymous',
+      user:0,
+      postmessages:[],
+      currentColor:'black'}
      this.ws = new WebSocket('ws://localhost:3001')
   }
   componentDidMount() {
@@ -16,27 +22,22 @@ class App extends Component {
     }
     this.ws.onmessage = (event)=> {
       let newData=JSON.parse(event.data);
-      switch(newData.type) {
+      const {type,size,color}=newData
+      switch(type) {
         case "incomingMessage":
-        let newstate1=this.state.messagesDB
-        newstate1.push(newData)
-        this.setState({messagesDB:newstate1})
+        this.setState({ messagesDB: [...this.state.messagesDB, newData] })
           break;
         case "incomingNotification":
-        let newstate2=this.state.messagesDB
-        newstate2.push(newData)
-        this.setState({messagesDB:newstate2})
+        this.setState({ messagesDB: [...this.state.messagesDB, newData] })
           break;
         case "onlineNumber":
-        this.setState({user:newData.size})
+        this.setState({user:size})
           break;
         case "color":
-        this.setState({currentColor:newData.color})
+        this.setState({currentColor:color})
           break;
         case "withPic":
-        let newstate3=this.state.messagesDB
-        newstate3.push(newData)
-        this.setState({messagesDB:newstate3})
+        this.setState({ messagesDB: [...this.state.messagesDB, newData] })
           break;
         default:
         console.log('error data is',newData)
@@ -53,7 +54,7 @@ class App extends Component {
   addText=(e)=>{
     if(e.key==='Enter'){
       let text=e.target.value
-      if(text.trim()!==null && text.trim()!=='' ){
+      if(text.trim()){
         e.target.value=''
         let username=this.state.username;
         if(username===null || username===''){username='Anonymous'}
@@ -90,18 +91,23 @@ class App extends Component {
   ///get PreverseName when focus
   getPreverseName=(e)=>{
     let name=e.target.value
+    if(name===''){
+      name='Anonymous'
+    }
     this.setState({preverseName:name})
   }
   ///send noticy to severs when blur
   sendNote=(e)=>{
     let name=e.target.value;
-    if(name===null || name===''){name='Anonymous'}
+    if(name===null || name===''){
+      name='Anonymous'
+    }
     let notes=`${this.state.preverseName} changed their name to ${name}`
     let notifction={
       type:'incomingNotification',
       note:notes,
     }
-    if(this.state.preverseName!==this.state.username && this.state.preverseName!=='')
+    if(this.state.preverseName!==this.state.username)
     this.ws.send(JSON.stringify(notifction))
   }
   render() {
@@ -116,6 +122,7 @@ class App extends Component {
         sendNote={this.sendNote}
 
       />
+      //This part is working and all good but I want to practice Container Pattern !
     // <div>
     //   <nav className="navbar">
     //     <a href="/" className="navbar-brand">Chatty</a>
