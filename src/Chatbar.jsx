@@ -1,3 +1,5 @@
+
+///This part is working well but I want to practice function Component so I commit it out!
 import React, { Component } from 'react'
 
 // class Chatbar extends Component {

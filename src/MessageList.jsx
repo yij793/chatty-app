@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Message from './Message.jsx'
 import { generateRandomId } from './idgenerator.jsx'
+///This part is working well but I want to practice function Component so I commit it out!
 // class MessageList extends Component {
 //   render() {
 //     let message=this.props.infors;
