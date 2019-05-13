@@ -5,10 +5,6 @@ A full stack app using React as front-end,express as back-end, webstocket as 3rd
 
 ### Usage
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-```
 Install the dependencies and start the server.
 
 ```
