@@ -41,7 +41,7 @@ class App extends Component {
           break;
         default:
         console.log('error data is',newData)
-          // show an error in the console if the message type is unknown
+  // show an error in the console if the message type is unknown
           throw new Error("Unknown event type " + newData.type);
     }     
     }
@@ -59,7 +59,7 @@ class App extends Component {
         let username=this.state.username;
         if(!username.trim()){username='Anonymous'}
         let reg=/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g;
-        ///test if infor contains image
+        //test if infor contains image
         if(reg.test(text)){
           let url=text.match(reg);
           let newMesg=text.replace(reg,'');
@@ -96,7 +96,7 @@ class App extends Component {
     }
     this.setState({preverseName:name})
   }
-  ///send noticy to severs when blur
+  //send noticy to severs when blur
   sendNote=(e)=>{
     let name=e.target.value;
     if(!name.trim()){
